@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Doomsday Clock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PHASE CLOCK</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;700&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -12,6 +12,7 @@
             font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
+           
         }
 
         .background {
@@ -26,11 +27,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* Subtle "pulse of anticipation" for the entry button */
-        .tense-btn {
-            animation: breathe 3.5s ease-in-out infinite;
-        }
-
+        .tense-btn { animation: breathe 3.5s ease-in-out infinite; }
         @keyframes breathe {
             0%, 100% { opacity: 0.5; letter-spacing: 5px; transform: scale(1); }
             50% { opacity: 1; letter-spacing: 6px; transform: scale(1.02); }
@@ -40,68 +37,58 @@
             text-align: center; color: #ffffff;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.50);
             animation: flicker 3s infinite;
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%;
         }
 
         h1 { 
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem; 
-            font-style: italic;
-            letter-spacing: 6px; 
-            margin-bottom: 60px; 
-            opacity: 1; 
-            font-weight: 400;
-            color: #d4d4d4;
+            font-size: 1.1rem; font-style: italic; letter-spacing: 6px; 
+            margin: 0 0 40px 0; opacity: 1; font-weight: 400; color: #d4d4d4;
         }
 
         #timer { 
-            font-size: 7rem; 
-            font-weight: 700; 
-            display: flex; 
-            gap: 45px; 
-            letter-spacing: -2px;
+            font-size: 7rem; font-weight: 700; display: flex; 
+            justify-content: center; gap: 45px; letter-spacing: -2px;
         }
 
-        .time-segment { display: flex; flex-direction: column; align-items: center; min-width: 150px; }
-
+        .time-segment { display: flex; flex-direction: column; align-items: center; min-width: 120px; }
         .label { 
-            font-size: 0.65rem; 
-            letter-spacing: 3px; 
-            margin-top: 15px; 
-            opacity: 0.65; 
-            text-transform: uppercase;
-            font-weight: 300;
+            font-size: 0.65rem; letter-spacing: 3px; margin-top: 15px; 
+            opacity: 0.65; text-transform: uppercase; font-weight: 300;
         }
 
-        .controls { margin-top: 100px; }
-
+        .controls { margin-top: 60px; }
         button {
-            background: transparent; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: rgba(255, 255, 255, 0.8); 
-            padding: 14px 40px; 
-            cursor: pointer;
-            text-transform: uppercase; 
-            letter-spacing: 5px; 
-            font-size: 0.65rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            outline: none;
+            background: transparent; border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.8); padding: 12px 30px; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 5px; 
+            font-size: 0.6rem; transition: all 0.6s ease; outline: none;
+        }
+        button:hover { border-color: #fff; color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+        /* PORTRAIT VIEW */
+        @media (max-width: 600px) and (orientation: portrait) {
+            #timer { flex-direction: column; font-size: 4.5rem; gap: 5px; }
+            .time-segment { flex-direction: row; gap: 15px; margin-left: 20px; }
+            .label { margin-top: 0; width: 80px; text-align: left; font-size: 0.7rem; }
+            h1 { font-size: 0.9rem; margin-bottom: 20px; }
         }
 
-        button:hover, button:focus { 
-            border-color: rgba(255, 255, 255, 1);
-            color: #ffffff; 
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.15);
+        /* LANDSCAPE VIEW (Android Optimization) */
+        @media (max-height: 500px) and (orientation: landscape) {
+            h1 { font-size: 0.8rem; margin-bottom: 15px; letter-spacing: 4px; }
+            #timer { font-size: 3.5rem; gap: 20px; }
+            .time-segment { min-width: 80px; }
+            .label { font-size: 0.5rem; margin-top: 5px; letter-spacing: 2px; }
+            .controls { margin-top: 20px; }
+            button { padding: 8px 20px; font-size: 0.5rem; }
         }
- 
+
         @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            48% { opacity: 1; }
+            0%, 100%, 48%, 52% { opacity: 1; }
             50% { opacity: 0.85; }
-            52% { opacity: 1; }
         }
-
         #month-segment { display: flex; }
     </style>
 </head>
@@ -132,7 +119,6 @@
                 <span id="seconds">00</span><span class="label">Sec</span>
             </div>
         </div>
-
         <div class="controls">
             <button onclick="toggleView()">Relativity Toggle</button>
         </div>
@@ -151,32 +137,22 @@
         function startSystem() {
             initialized = true;
             document.getElementById("overlay").style.display = "none";
-            tick.play().then(() => { tick.pause(); tick.currentTime = 0; });
+            tick.play().then(() => { tick.pause(); tick.currentTime = 0; }).catch(e => {});
             updateClock();
             setInterval(updateClock, 1000);
-
         }
 
         function toggleView() {
             showMonths = !showMonths;
             document.getElementById("month-segment").style.display = showMonths ? "flex" : "none";
-            document.getElementById("view-title").innerText = showMonths ? "REMAINING TIME" : "REMAINING TIME";
             updateClock();
         }
 
         function updateClock() {
             const now = new Date();
             const diff = targetDate - now;
-
-            if (diff <= 0) {
-                document.getElementById("timer").innerHTML = "Mission Concluded";
-                return;
-            }
-
-            if (initialized) {
-                tick.currentTime = 0;
-                tick.play().catch(e => {});
-            }
+            if (diff <= 0) { document.getElementById("timer").innerHTML = "Mission Concluded"; return; }
+            if (initialized) { tick.currentTime = 0; tick.play().catch(e => {}); }
 
             let d, h, m, s, mo;
             if (showMonths) {
@@ -190,22 +166,19 @@
                 h = Math.floor((rd % 86400000) / 3600000);
                 m = Math.floor((rd % 3600000) / 60000);
                 s = Math.floor((rd % 60000) / 1000);
-                document.getElementById("months").innerHTML = mo.toString().padStart(2, '0');
-                document.getElementById("days").innerHTML = d.toString().padStart(2, '0');
+                document.getElementById("months").innerText = mo.toString().padStart(2, '0');
+                document.getElementById("days").innerText = d.toString().padStart(2, '0');
             } else {
                 d = Math.floor(diff / 86400000);
                 h = Math.floor((diff % 86400000) / 3600000);
                 m = Math.floor((diff % 3600000) / 60000);
                 s = Math.floor((diff % 60000) / 1000);
-                document.getElementById("days").innerHTML = d.toString().padStart(3, '0');
+                document.getElementById("days").innerText = d.toString().padStart(3, '0');
             }
-
-            document.getElementById("hours").innerHTML = h.toString().padStart(2, '0');
-            document.getElementById("minutes").innerHTML = m.toString().padStart(2, '0');
-            document.getElementById("seconds").innerHTML = s.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
         }
     </script>
 </body>
 </html>
-
-
