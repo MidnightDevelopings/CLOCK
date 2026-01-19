@@ -38,7 +38,8 @@
 
         .clock-container {
             text-align: center; color: #ffffff;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.50);
+            animation: flicker 3s infinite;
         }
 
         h1 { 
@@ -47,7 +48,7 @@
             font-style: italic;
             letter-spacing: 6px; 
             margin-bottom: 60px; 
-            opacity: 0.7; 
+            opacity: 1; 
             font-weight: 400;
             color: #d4d4d4;
         }
@@ -66,7 +67,7 @@
             font-size: 0.65rem; 
             letter-spacing: 3px; 
             margin-top: 15px; 
-            opacity: 0.35; 
+            opacity: 0.65; 
             text-transform: uppercase;
             font-weight: 300;
         }
@@ -93,6 +94,13 @@
             background: rgba(255, 255, 255, 0.05);
             box-shadow: 0 0 50px rgba(255, 255, 255, 0.15);
         }
+ 
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            48% { opacity: 1; }
+            50% { opacity: 0.85; }
+            52% { opacity: 1; }
+        }
 
         #month-segment { display: flex; }
     </style>
@@ -106,7 +114,7 @@
     <div class="background"></div>
 
     <div class="clock-container">
-        <h1 id="view-title">Chronos Status</h1>
+        <h1 id="view-title">REMAINING TIME</h1>
         <div id="timer">
             <div class="time-segment" id="month-segment">
                 <span id="months">00</span><span class="label">Months</span>
@@ -146,12 +154,13 @@
             tick.play().then(() => { tick.pause(); tick.currentTime = 0; });
             updateClock();
             setInterval(updateClock, 1000);
+
         }
 
         function toggleView() {
             showMonths = !showMonths;
             document.getElementById("month-segment").style.display = showMonths ? "flex" : "none";
-            document.getElementById("view-title").innerText = showMonths ? "Chronos Status" : "Final Countdown";
+            document.getElementById("view-title").innerText = showMonths ? "REMAINING TIME" : "REMAINING TIME";
             updateClock();
         }
 
@@ -198,3 +207,4 @@
     </script>
 </body>
 </html>
+
